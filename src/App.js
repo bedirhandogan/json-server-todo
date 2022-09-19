@@ -43,7 +43,14 @@ function App() {
     }
 
     function itemCompleted(id) {
-        // code
+        // state'in içinde bulunan objelerden id ile eşleşeni alıyorum
+        const filtered = tasks.find(item => item.id === id);
+        // id ile eşleşen objemin içinde bulunan "done" key'in value değerini güncelliyorum
+        fetch(`http://localhost:3001/tasks/${id}`, {
+            ...requestOptions,
+            method: 'PATCH',
+            body: JSON.stringify({ done: !filtered.done })
+        });
     }
 
     function editValue(event, id) {
