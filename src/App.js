@@ -9,12 +9,30 @@ function App() {
     const [value, setValue] = useState('');
 
     useEffect(() => {
-        // code
+        // her render olduğunda state'i güncelliyorum. Sunucuyu yoracak bir hareket ama şuanlık kalsın bir test projesi çünki :)
+        fetch('http://localhost:3001/tasks/').then(res => res.json()).then(res => setTasks(res));
     });
+
+    // headers
+    const requestOptions = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    }
 
     function submitHandle(event) {
         event.preventDefault(); // default işlemlere engel oluyorum
-        // code
+        // fake database'e yeni veri ekliyorum
+        fetch('http://localhost:3001/tasks/', {
+            ...requestOptions,
+            method: 'POST',
+            body: JSON.stringify({
+                id: uuid,
+                value: event.target[0].value,
+                done: false
+            })
+        });
     }
 
     function deleteItem(event, id) {
