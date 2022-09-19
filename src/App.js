@@ -36,7 +36,10 @@ function App() {
     }
 
     function deleteItem(event, id) {
-        // code
+        // id ile eşleşen objeyi siliyorum
+        fetch(`http://localhost:3001/tasks/${id}`, {
+            method: 'DELETE'
+        });
     }
 
     function itemCompleted(id) {
