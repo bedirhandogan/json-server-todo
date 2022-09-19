@@ -55,7 +55,12 @@ function App() {
 
     function editValue(event, id) {
         event.preventDefault(); // default işlemlere engel oluyorum
-        // code
+        // id ile eşleşen objemin içinde bulunan "value" key'in value değerini güncelliyorum
+        fetch(`http://localhost:3001/tasks/${id}`, {
+            ...requestOptions,
+            method: 'PATCH',
+            body: JSON.stringify({ value: event.target[0].value })
+        });
     }
 
     return (<div className={'App'}>
