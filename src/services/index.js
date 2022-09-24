@@ -7,8 +7,7 @@ export function getTasks(url) {
     return fetch(url, {
         headers,
         method: 'GET'
-    }).then(res => res.json())
-        .catch(err => console.error(err));
+    }).then(res => res.json()).catch(err => console.error(err));
 }
 
 export function addTask(url, data) {
