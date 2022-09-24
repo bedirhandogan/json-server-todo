@@ -29,7 +29,7 @@ function Item({item, deleteItem, itemCompleted, editValue}) {
                 <img src={EditWrite} alt={'edit icon'} onClick={() => {
                     setEditMode(!editMode); inputRef.current.focus();
                 }} />
-                <img src={Trash} alt={'trash icon'} onClick={event => deleteItem(event, item.id)}/>
+                <img src={Trash} alt={'trash icon'} onClick={event => deleteItem(item.id)}/>
             </div>
         </div>
     )

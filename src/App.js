@@ -2,65 +2,43 @@ import 'assets/styles/styles.css';
 import Form from "components/Form";
 import List from "components/List";
 import {useEffect, useState} from "react";
+import {addTask, deleteTask, editTask, getTasks} from "services";
 
 function App() {
-    const [tasks, setTasks] = useState([]); // init state array
-    const uuid = Math.floor(Math.random() * new Date()); // basit bir uuid
+    const [tasks, setTasks] = useState([]);
+    const uuid = Math.floor(Math.random() * new Date()); // uuid
     const [value, setValue] = useState('');
 
     useEffect(() => {
-        // her render olduğunda state'i güncelliyorum. Sunucuyu yoracak bir hareket ama şuanlık kalsın bir test projesi çünki :)
-        fetch('http://localhost:3001/tasks/').then(res => res.json()).then(res => setTasks(res));
-    });
+        getTasks('http://localhost:3001/tasks/').then(result => setTasks(result));
+    }, []);
 
-    // headers
-    const requestOptions = {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-    }
-
-    function submitHandle(event) {
-        event.preventDefault(); // default işlemlere engel oluyorum
-        // fake database'e yeni veri ekliyorum
-        fetch('http://localhost:3001/tasks/', {
-            ...requestOptions,
-            method: 'POST',
-            body: JSON.stringify({
-                id: uuid,
-                value: event.target[0].value,
-                done: false
-            })
+    async function submitHandle(event) {
+        event.preventDefault();
+        console.log(event.target[0].value)
+        addTask('http://localhost:3001/tasks/', {
+            id: uuid,
+            value: event.target[0].value,
+            done: false
         });
+        await getTasks('http://localhost:3001/tasks/').then(result => setTasks(result));
     }
 
-    function deleteItem(event, id) {
-        // id ile eşleşen objeyi siliyorum
-        fetch(`http://localhost:3001/tasks/${id}`, {
-            method: 'DELETE'
-        });
+    async function deleteItem(id) {
+        deleteTask(`http://localhost:3001/tasks/${id}`);
+        await getTasks('http://localhost:3001/tasks/').then(result => setTasks(result));
     }
 
-    function itemCompleted(id) {
-        // state'in içinde bulunan objelerden id ile eşleşeni alıyorum
+    async function itemCompleted(id) {
         const filtered = tasks.find(item => item.id === id);
-        // id ile eşleşen objemin içinde bulunan "done" key'in value değerini güncelliyorum
-        fetch(`http://localhost:3001/tasks/${id}`, {
-            ...requestOptions,
-            method: 'PATCH',
-            body: JSON.stringify({ done: !filtered.done })
-        });
+        await editTask(`http://localhost:3001/tasks/${id}`, { done: !filtered.done })
+        await getTasks('http://localhost:3001/tasks/').then(result => setTasks(result));
     }
 
-    function editValue(event, id) {
-        event.preventDefault(); // default işlemlere engel oluyorum
-        // id ile eşleşen objemin içinde bulunan "value" key'in value değerini güncelliyorum
-        fetch(`http://localhost:3001/tasks/${id}`, {
-            ...requestOptions,
-            method: 'PATCH',
-            body: JSON.stringify({ value: event.target[0].value })
-        });
+    async function editValue(event, id) {
+        event.preventDefault();
+        editTask(`http://localhost:3001/tasks/${id}`, { value: event.target[0].value });
+        await getTasks('http://localhost:3001/tasks/').then(result => setTasks(result));
     }
 
     return (<div className={'App'}>
