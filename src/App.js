@@ -7,7 +7,7 @@ import {addTask, deleteTask, editTask, getTasks} from "services";
 function App() {
     const [tasks, setTasks] = useState([]);
     const uuid = Math.floor(Math.random() * new Date()); // uuid
-    const [value, setValue] = useState('');
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
         getTasks('http://localhost:3001/tasks/').then(result => setTasks(result));
@@ -43,7 +43,7 @@ function App() {
 
     return (<div className={'App'}>
         <div className={'container'}>
-            <Form value={value} setValue={setValue} submitHandle={submitHandle}/>
+            <Form searchValue={searchValue} setSearchValue={setSearchValue} submitHandle={submitHandle}/>
             <List deleteItem={deleteItem} itemCompleted={itemCompleted} editValue={editValue} tasks={tasks}/>
         </div>
     </div>);

@@ -1,17 +1,16 @@
 import './styles.css';
 import {ClearIcon} from "assets/index";
 
-function Form({value, setValue, submitHandle}) {
-    // Fn: submitHandle
+function Form({searchValue, setSearchValue, submitHandle}) {
     return (<form className={'form-container'} onSubmit={event => submitHandle(event)}>
         <div className={'input'}>
             <input type="text"
-                   value={value}
+                   value={searchValue}
                    placeholder={'Enter task'}
-                   onChange={event => setValue(event.target.value)}/>
+                   onChange={event => setSearchValue(event.target.value)}/>
             {!!value && <img src={ClearIcon}
                              alt="clear icon"
-                             onClick={() => setValue('')}
+                             onClick={() => setSearchValue('')}
             />}
         </div>
 
