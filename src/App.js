@@ -15,7 +15,6 @@ function App() {
 
     async function submitHandle(event) {
         event.preventDefault();
-        console.log(event.target[0].value)
         addTask('http://localhost:3001/tasks/', {
             id: uuid,
             value: event.target[0].value,

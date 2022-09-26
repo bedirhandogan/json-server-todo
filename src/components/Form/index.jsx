@@ -8,7 +8,7 @@ function Form({searchValue, setSearchValue, submitHandle}) {
                    value={searchValue}
                    placeholder={'Enter task'}
                    onChange={event => setSearchValue(event.target.value)}/>
-            {!!value && <img src={ClearIcon}
+            {!!searchValue && <img src={ClearIcon}
                              alt="clear icon"
                              onClick={() => setSearchValue('')}
             />}
